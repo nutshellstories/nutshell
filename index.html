@@ -233,8 +233,12 @@
   .aurora.a2{ width:480px; height:480px; background:radial-gradient(circle,#8B5CF6,transparent 65%); right:14%; top:4%; animation:drift2 17s var(--ease) infinite; }
   .aurora.a3{ width:420px; height:420px; background:radial-gradient(circle,#3FD7EF,transparent 65%); left:12%; bottom:0; animation:drift3 19s var(--ease) infinite; }
 
-  .phone{ position:absolute; z-index:2; -webkit-backface-visibility:hidden; backface-visibility:hidden; }
-  .phone img{ width:auto; filter:drop-shadow(0 30px 70px rgba(0,0,0,.6)); transform:translateZ(0); -webkit-backface-visibility:hidden; backface-visibility:hidden; }
+  /* Kein will-change / translateZ / backface hier: das erzwingt in Safari eigene
+     GPU-Ebenen, die den drop-shadow rechteckig abschneiden. Ohne Ebenen-Promotion
+     rendert Safari den weichen Schatten korrekt – und das Nicht-Zeichnen-Problem
+     war ohnehin durch das entfernte will-change verursacht. */
+  .phone{ position:absolute; z-index:2; }
+  .phone img{ width:auto; filter:drop-shadow(0 24px 48px rgba(0,0,0,.55)); }
   .phone.main{ z-index:3; animation:float1 7s ease-in-out infinite; }
   .phone.main img{ height:min(620px, 76vw); }
   .phone.left{ transform:translateX(-64%) rotate(-9deg) scale(.82); z-index:2; opacity:.96; animation:float2 8.5s ease-in-out infinite; }
