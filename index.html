@@ -196,7 +196,10 @@
   /* ============================================================
      HERO
      ============================================================ */
-  .hero{ position:relative; padding-top:calc(var(--nav-h) + 60px); padding-bottom:40px; text-align:center; overflow:hidden; }
+  /* overflow-x:clip statt overflow:hidden: verhindert seitliches Überlaufen,
+     schneidet aber den Aurora-Schein an der Unterkante NICHT hart ab
+     (overflow:hidden erzeugte eine harte horizontale Kante quer zur Seite). */
+  .hero{ position:relative; padding-top:calc(var(--nav-h) + 60px); padding-bottom:40px; text-align:center; overflow-x:clip; }
   .hero-pill{
     display:inline-flex; align-items:center; gap:9px; padding:7px 8px 7px 14px; border-radius:999px;
     background:rgba(255,255,255,.04); border:1px solid var(--border); font-size:.86rem; color:var(--muted);
@@ -238,14 +241,19 @@
      rendert Safari den weichen Schatten korrekt – und das Nicht-Zeichnen-Problem
      war ohnehin durch das entfernte will-change verursacht. */
   .phone{ position:absolute; z-index:2; }
-  .phone img{ width:auto; filter:drop-shadow(0 24px 48px rgba(0,0,0,.55)); }
+  /* Maske: iPhones (inkl. Schatten) lösen sich nach unten weich auf –
+     ersetzt den früheren deckenden .stage-fade-Verlauf, der eine harte Kante erzeugte. */
+  .phone img{
+    width:auto; filter:drop-shadow(0 24px 48px rgba(0,0,0,.55));
+    -webkit-mask-image:linear-gradient(to bottom, #000 64%, transparent 100%);
+    mask-image:linear-gradient(to bottom, #000 64%, transparent 100%);
+  }
   .phone.main{ z-index:3; animation:float1 7s ease-in-out infinite; }
   .phone.main img{ height:min(620px, 76vw); }
   .phone.left{ transform:translateX(-64%) rotate(-9deg) scale(.82); z-index:2; opacity:.96; animation:float2 8.5s ease-in-out infinite; }
   .phone.right{ transform:translateX(64%) rotate(9deg) scale(.82); z-index:2; opacity:.96; animation:float3 9.5s ease-in-out infinite; }
   .phone.left img, .phone.right img{ height:min(540px, 66vw); }
 
-  .stage-fade{ position:absolute; left:0; right:0; bottom:-1px; height:140px; background:linear-gradient(to top,var(--bg),transparent); z-index:4; pointer-events:none; }
 
   /* ============================================================
      STAT STRIP
@@ -572,7 +580,6 @@
     <div class="phone left"><img src="assets/img/play-home.webp" alt="Play-Bildschirm der App: Gold-Liga mit 4.244 Trophäen, Quizduell und Schätzduell" decoding="async" fetchpriority="high" /></div>
     <div class="phone right"><img src="assets/img/schaetz.webp" alt="Schätzduell in der App: Schätze, wie viele Planeten die Sonne umkreisen, live gegen einen Gegner" decoding="async" fetchpriority="high" /></div>
     <div class="phone main"><img src="assets/img/story-day.webp" alt="Story des Tages in der Nutshell-Stories-App: „Warum Hunde dich so gut verstehen“" decoding="async" /></div>
-    <div class="stage-fade"></div>
   </div>
 </header>
 
